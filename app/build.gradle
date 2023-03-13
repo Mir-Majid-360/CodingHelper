@@ -48,12 +48,26 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // by MMM
+    def retrofit_version="2.9.0"
 
-    // Retrofit  for JSON serialization/deserialization
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:2.6.2"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.8.0"
+    implementation "com.squareup.okhttp3:okhttp:4.8.0"
+    //GSON
+    implementation 'com.google.code.gson:gson:2.8.6'
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    // JSOUP FOR
+    implementation 'org.jsoup:jsoup:1.15.3'
+
+    // SVG
+    implementation 'com.pixplicity.sharp:library:1.1.0'
+
 
     //firebase services
     implementation platform('com.google.firebase:firebase-bom:31.2.3')
