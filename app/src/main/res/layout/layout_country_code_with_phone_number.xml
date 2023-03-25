@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_black_outline_rounded_corners">
+
+    <ImageView
+        android:id="@+id/ivFlag"
+        android:layout_width="@dimen/dimen_30dp"
+        android:layout_height="@dimen/dimen_20sp"
+        android:scaleType="fitXY"
+        android:layout_marginStart="@dimen/dimen_2dp"
+        android:src="@drawable/app_icon_"
+        app:layout_constraintBottom_toBottomOf="@id/etPhone"
+        app:layout_constraintStart_toEndOf="@id/gl_v1"
+        app:layout_constraintTop_toTopOf="@id/etPhone" />
+
+    <TextView
+        android:id="@+id/tvCountryCode"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/dimen_2dp"
+        android:layout_marginEnd="@dimen/dimen_6dp"
+        android:fontFamily="@font/poppins"
+        android:gravity="center"
+        android:text="+91"
+        android:textAlignment="center"
+        android:textColor="@color/app_black"
+        android:textFontWeight="400"
+        android:textSize="@dimen/dimen_16sp"
+        app:layout_constraintBottom_toBottomOf="@id/etPhone"
+        app:layout_constraintEnd_toStartOf="@id/etPhone"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@id/ivFlag"
+        app:layout_constraintTop_toTopOf="@id/etPhone" />
+
+
+    <EditText
+        android:id="@+id/etPhone"
+        android:layout_width="@dimen/dimen_0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="phone"
+        android:background="@null"
+        android:digits="1234567890"
+        android:fontFamily="@font/poppins"
+        android:hint="@string/enter_phone_number"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:padding="@dimen/dimen_10dp"
+        android:textColor="@color/app_black"
+        android:textFontWeight="500"
+        android:textSize="@dimen/dimen_16sp"
+        app:layout_constraintBottom_toTopOf="@id/gl_h2"
+        app:layout_constraintEnd_toStartOf="@id/gl_v2"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintStart_toEndOf="@id/tvCountryCode"
+        app:layout_constraintTop_toBottomOf="@id/gl_h1" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_h1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".01" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_h2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_v1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".01" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_v2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1" />
+</androidx.constraintlayout.widget.ConstraintLayout>

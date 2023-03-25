@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">Coding Helper</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    // firebase Coding Helper
+    <string name="web_client_id">669669274550-6007ckr82erps8mmefm0u38qnqtgb1gs.apps.googleusercontent.com</string>
+    <string name="web_client_secret">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</string>
+    <string name="enter_phone_number">Enter Phone Number</string>
+    <string name="login_with_your_phone">Login With Your Phone</string>
+    <string name="verify">Verify</string>
 </resources>

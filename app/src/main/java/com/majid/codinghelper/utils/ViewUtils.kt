@@ -17,64 +17,58 @@ import java.io.IOException
 
 class ViewUtils {
 
-    companion object{
-        lateinit var  pd:ProgressDialog
+    companion object {
+        lateinit var pd: ProgressDialog
 
-        fun showToast(context: Context ,msg:String)
-        {
+        fun showToast(context: Context, msg: String) {
 
-            val customToastLayout =(context as Activity).layoutInflater.inflate(R.layout.toast,(context as Activity).findViewById(R.id.toast_container))
+            val customToastLayout = (context as Activity).layoutInflater.inflate(
+                R.layout.toast,
+                (context as Activity).findViewById(R.id.toast_container)
+            )
             val customToast = Toast(context)
-            val text:TextView=customToastLayout.findViewById(R.id.text)
-            text.text=msg
+            val text: TextView = customToastLayout.findViewById(R.id.text)
+            text.text = msg
             customToast.view = customToastLayout
-            customToast.setGravity(Gravity.CENTER,0,0)
+            customToast.setGravity(Gravity.CENTER, 0, 0)
             customToast.duration = Toast.LENGTH_SHORT
             customToast.show()
 
         }
 
-        fun showToast(context: Context ,msg:String,isError:Boolean)
-        {
+        fun showToast(context: Context, msg: String, isError: Boolean) {
 
-            val customToastLayout =(context as Activity).layoutInflater.inflate(R.layout.toast,(context as Activity).findViewById(R.id.toast_container))
+            val customToastLayout = (context as Activity).layoutInflater.inflate(
+                R.layout.toast,
+                (context as Activity).findViewById(R.id.toast_container)
+            )
             val customToast = Toast(context)
-            val text:TextView=customToastLayout.findViewById(R.id.text)
-            val icon:ImageView=customToastLayout.findViewById(R.id.icon)
-            if(isError)
-            {
+            val text: TextView = customToastLayout.findViewById(R.id.text)
+            val icon: ImageView = customToastLayout.findViewById(R.id.icon)
+            if (isError) {
 //                icon.setImageDrawable(context.getDrawable(R.drawable.icon_error))
-            }else{
+            } else {
 //                icon.setImageDrawable(context.getDrawable(R.drawable.icon_ok))
             }
-            text.text=msg
+            text.text = msg
             customToast.view = customToastLayout
-            customToast.setGravity(Gravity.CENTER,0,0)
+            customToast.setGravity(Gravity.CENTER, 0, 0)
             customToast.duration = Toast.LENGTH_SHORT
             customToast.show()
 
         }
 
-        fun showProgressDialog(context: Context,msg:String)
-        {
-            pd   = ProgressDialog(context)
+        fun showProgressDialog(context: Context, msg: String) {
+            pd = ProgressDialog(context)
             pd.setTitle(msg)
             pd.setMessage("Progressing..")
             pd.show()
         }
 
-        fun hideProgressDialog()
-        {
+        fun hideProgressDialog() {
             pd?.hide()!!
 
         }
-
-
-
-
-
-
-
 
 
         fun showSoftKeyBoard(activity: Activity?, rootView: View) {
@@ -86,17 +80,18 @@ class ViewUtils {
             }
         }
 
-        fun showKeyBoard(context: Context,rootView: View) {
+        fun showKeyBoard(context: Context, rootView: View) {
             if (context != null) {
                 rootView.requestFocus()
-                val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm =
+                    context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.showSoftInput(rootView, InputMethodManager.SHOW_IMPLICIT)
             }
         }
 
-        fun getTextFromHTML(string: String):String{
+        fun getTextFromHTML(string: String): String {
 
-            return  Jsoup.parse(string).text()
+            return Jsoup.parse(string).text()
         }
 
 //        fun fetchSvg(context: Context, url: String, target: ImageView) {
@@ -145,10 +140,10 @@ class ViewUtils {
 //            }
 //        }
 
-        fun smoothScrollTop(parentScrollView: NestedScrollView) {
-            parentScrollView.fullScroll(ScrollView.FOCUS_UP);
-            parentScrollView.setSmoothScrollingEnabled(true)
-        }
+//        fun smoothScrollTop(parentScrollView: NestedScrollView) {
+//            parentScrollView.fullScroll(ScrollView.FOCUS_UP);
+//            parentScrollView.setSmoothScrollingEnabled(true)
+//        }
 
 
 //        fun swipeAsBlock(recyclerView: RecyclerView, blockSize:Int): SnapToBlock {
@@ -164,7 +159,6 @@ class ViewUtils {
 //            return  snapToBlock;
 //
 //        }
-
 
 
     }
