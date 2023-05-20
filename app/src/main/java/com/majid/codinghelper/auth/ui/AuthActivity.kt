@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.gson.JsonArray
 import com.majid.codinghelper.R
 import com.majid.codinghelper.auth.authviewmodel.AuthViewModel
+import com.majid.codinghelper.auth.ui.fragments.FacebookProfileFragment
 import com.majid.codinghelper.auth.ui.fragments.LoginFragment
 import com.majid.codinghelper.auth.ui.fragments.SignUpFragment
 import com.majid.codinghelper.databinding.ActivityAuthBinding
@@ -54,6 +55,13 @@ class AuthActivity : AppCompatActivity() {
             val objects: Array<Any>? = event.getContentIfNotHandled()
             if (objects != null) {
                 openFragment(LoginFragment.newInstance(objects), "")
+            }
+        }
+
+        authViewModel.getOpenFacebookProfileFragment().observe(this) { event ->
+            val objects: Array<Any>? = event.getContentIfNotHandled()
+            if (objects != null) {
+                openFragment(FacebookProfileFragment.newInstance(objects), "")
             }
         }
 

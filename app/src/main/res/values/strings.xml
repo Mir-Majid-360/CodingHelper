@@ -6,7 +6,16 @@
     // firebase Coding Helper
     <string name="web_client_id">669669274550-6007ckr82erps8mmefm0u38qnqtgb1gs.apps.googleusercontent.com</string>
     <string name="web_client_secret">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</string>
+
+    // fb strings
+    <string name="facebook_app_id">128117573422016</string>
+    <string name="fb_login_protocol_scheme">fb128117573422016</string>
+    <string name="facebook_client_token">56789</string>
+
     <string name="enter_phone_number">Enter Phone Number</string>
     <string name="login_with_your_phone">Login With Your Phone</string>
     <string name="verify">Verify</string>
+    <string name="login">Login</string>
+    <string name="login_with_facebook">Login With Facebook</string>
+    <string name="logout">Logout</string>
 </resources>

@@ -13,6 +13,9 @@ class AuthViewModel() : ViewModel() {
     private var openLoginFragment: MutableLiveData<Event<Array<Any>>> =
         MutableLiveData<Event<Array<Any>>>()
 
+    private var openFacebookProfileFragment: MutableLiveData<Event<Array<Any>>> =
+        MutableLiveData<Event<Array<Any>>>()
+
 
     fun getOpenSignUpFragment(): MutableLiveData<Event<Array<Any>>> {
         return openSignUpFragment
@@ -29,5 +32,13 @@ class AuthViewModel() : ViewModel() {
 
     fun setOpenLoginFragment(objects: Array<Any>) {
         openLoginFragment.value = Event(objects)
+    }
+
+    fun getOpenFacebookProfileFragment(): MutableLiveData<Event<Array<Any>>> {
+        return openFacebookProfileFragment
+    }
+
+    fun setOpenFacebookProfileFragment(objects: Array<Any>) {
+        openFacebookProfileFragment.value = Event(objects)
     }
 }

@@ -17,23 +17,23 @@
            android:layout_height="wrap_content"
            />
 
-       <ImageView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-              app:layout_constraintTop_toBottomOf="@id/toolbar"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              android:layout_margin="20dp"
-              android:id="@+id/ivPhoto"/>
-       <ImageView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           app:layout_constraintTop_toBottomOf="@id/ivPhoto"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintEnd_toEndOf="parent"
-           android:layout_margin="20dp"
-           android:src="@drawable/ic_photo_camera"
-           android:id="@+id/ivCamera"/>
+              <ImageView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                     app:layout_constraintTop_toBottomOf="@id/toolbar"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     android:layout_margin="20dp"
+                     android:id="@+id/ivPhoto"/>
+              <ImageView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  app:layout_constraintTop_toBottomOf="@id/ivPhoto"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  android:layout_margin="20dp"
+                  android:src="@drawable/ic_photo_camera"
+                  android:id="@+id/ivCamera"/>
 
 
 

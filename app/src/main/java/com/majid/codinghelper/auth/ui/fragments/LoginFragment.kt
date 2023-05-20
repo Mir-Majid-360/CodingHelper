@@ -9,10 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.facebook.*
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -22,9 +24,11 @@ import com.google.firebase.ktx.Firebase
 import com.majid.codinghelper.R
 import com.majid.codinghelper.auth.authviewmodel.AuthViewModel
 import com.majid.codinghelper.auth.models.User
+import com.majid.codinghelper.auth.ui.ViewProfileActivity
 import com.majid.codinghelper.common.hide
 import com.majid.codinghelper.common.show
 import com.majid.codinghelper.databinding.FragmentLoginBinding
+import com.majid.codinghelper.ui.MainActivity
 import com.majid.codinghelper.utils.ViewUtils
 import java.util.concurrent.TimeUnit
 
@@ -32,26 +36,20 @@ class LoginFragment() : Fragment() {
 
     lateinit var binding: FragmentLoginBinding
     lateinit var authViewModel: AuthViewModel
-
-    private lateinit var auth: FirebaseAuth
-    // [END declare_auth]
-
-    private lateinit var googleSignInClient: GoogleSignInClient
-
-    lateinit var signInButton: SignInButton
-
-    var countryCode = ""
-    lateinit var cTimer: CountDownTimer
-
     var user = User()
 
-    // [END declare_auth]
+    private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
+    var countryCode = ""
+    lateinit var cTimer: CountDownTimer
     var phone: String = ""
-
-
     private var storedVerificationId: String? = ""
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+
+   //facebook
+    private lateinit var callbackManager: CallbackManager
+
 
     constructor(objects: Array<Any>) : this() {
 
@@ -75,27 +73,102 @@ class LoginFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        auth = Firebase.auth
 
         initViewModel()
         setListeners()
+        initGso()
+        initPhoneAuth()
+        callbackManager = CallbackManager.Factory.create()
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.web_client_id))
-            .requestEmail()
-            .build()
+        val  accessToken = AccessToken.getCurrentAccessToken()
+        if (accessToken!= null && !accessToken.isExpired){
+            getFacebookData()
+//            authViewModel.setOpenFacebookProfileFragment(arrayOf(1,2))
 
-        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-        // [END config_signin]
-
-
-        // [START initialize_auth]
-        // Initialize Firebase Auth
-        auth = Firebase.auth
-        // [END initialize_auth]
-
-        signInButton = binding.btnGoogleSignIn
+            // goto Main Activity
+//            startActivity(Intent(requireActivity(),ViewProfileActivity::class.java))
+//            requireActivity().finish()
+        }
 
 
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+        object :FacebookCallback<LoginResult>{
+            override fun onCancel() {
+
+            }
+
+            override fun onError(error: FacebookException) {
+
+                // print error
+            }
+
+            override fun onSuccess(result: LoginResult) {
+                startActivity(Intent(requireActivity(),MainActivity::class.java))
+            }
+
+        })
+
+
+    }
+
+    private fun getFacebookData() {
+
+        val accessToken = AccessToken.getCurrentAccessToken()
+
+
+    }
+
+
+    private fun setListeners() {
+        binding.btnGoogleSignIn.setOnClickListener {
+            signIn()
+        }
+
+        binding.layoutPhoneLogin.tvVerify.setOnClickListener {
+            countryCode = binding.layoutPhoneLogin.layoutPhone.tvCountryCode.text.toString()
+            var mobile = binding.layoutPhoneLogin.layoutPhone.etPhone.text.toString()
+            phone = countryCode + mobile
+            Log.e("PHONE NUMBER", phone)
+
+            if (isValid()) {
+                startPhoneNumberVerification(phone)
+
+            }
+
+        }
+
+
+        binding.layoutVerifyPin.tvVerify.setOnClickListener {
+            if (pinEntered()) {
+                var otp = binding.layoutVerifyPin.etPin.text.toString()
+
+                verifyPhoneNumberWithCode(storedVerificationId, otp)
+            }
+        }
+
+        binding.layoutVerifyPin.tvResendOtp.setOnClickListener {
+            binding.layoutVerifyPin.tvTimer.text = ""
+            binding.layoutVerifyPin.tvResendOtp.hide()
+            resendVerificationCode(phone, resendToken)
+        }
+
+
+        binding.tvFacebookLogin.setOnClickListener {
+            facebookLogin()
+        }
+
+    }
+
+    private fun facebookLogin() {
+        LoginManager.getInstance().logInWithReadPermissions(requireActivity(), listOf("public_profile,email"))
+    }
+
+    /**
+     *  For Phone Authentication
+     * **/
+    private fun initPhoneAuth() {
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -142,7 +215,6 @@ class LoginFragment() : Fragment() {
                 startTimer()
             }
         }
-
 
     }
 
@@ -210,7 +282,7 @@ class LoginFragment() : Fragment() {
     }
 
 
-    private fun valid(): Boolean {
+    private fun isValid(): Boolean {
 
         if (binding.layoutPhoneLogin.layoutPhone.etPhone.text.isEmpty()) {
             binding.layoutPhoneLogin.layoutPhone.etPhone.setError("Enter Number")
@@ -233,12 +305,23 @@ class LoginFragment() : Fragment() {
         }
     }
 
+    /**
+     *  For Google Sign IN
+     * **/
+    private fun initGso() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.web_client_id))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         ViewUtils.showProgressDialog(requireActivity(), "Signing In Please Wait..")
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == GOOGLE_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -250,6 +333,7 @@ class LoginFragment() : Fragment() {
                 Log.w(TAG, "Google sign in failed", e)
             }
         }
+
     }
 
 
@@ -283,7 +367,7 @@ class LoginFragment() : Fragment() {
 
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        startActivityForResult(signInIntent, GOOGLE_SIGN_IN)
     }
     // [END signin]
 
@@ -306,40 +390,6 @@ class LoginFragment() : Fragment() {
         return true
     }
 
-    private fun setListeners() {
-        binding.btnGoogleSignIn.setOnClickListener {
-            signIn()
-        }
-
-        binding.layoutPhoneLogin.tvVerify.setOnClickListener {
-            countryCode = binding.layoutPhoneLogin.layoutPhone.tvCountryCode.text.toString()
-            var mobile = binding.layoutPhoneLogin.layoutPhone.etPhone.text.toString()
-            phone = countryCode + mobile
-            Log.e("PHONE NUMBER", phone)
-
-            if (valid()) {
-                startPhoneNumberVerification(phone)
-
-            }
-
-        }
-
-
-        binding.layoutVerifyPin.tvVerify.setOnClickListener {
-            if (pinEntered()) {
-                var otp = binding.layoutVerifyPin.etPin.text.toString()
-
-                verifyPhoneNumberWithCode(storedVerificationId, otp)
-            }
-        }
-
-        binding.layoutVerifyPin.tvResendOtp.setOnClickListener {
-            binding.layoutVerifyPin.tvTimer.text =""
-            binding.layoutVerifyPin.tvResendOtp.hide()
-            resendVerificationCode(phone,resendToken)
-        }
-
-    }
 
     fun startTimer() {
 
@@ -351,7 +401,7 @@ class LoginFragment() : Fragment() {
             }
 
             override fun onFinish() {
-                binding.layoutVerifyPin.tvTimer.text =""
+                binding.layoutVerifyPin.tvTimer.text = ""
                 binding.layoutVerifyPin.tvTimer.hide()
                 binding.layoutVerifyPin.tvResendOtp.show()
 
@@ -364,7 +414,8 @@ class LoginFragment() : Fragment() {
     companion object {
 
         private const val TAG = "GoogleActivity"
-        private const val RC_SIGN_IN = 9001
+        private const val GOOGLE_SIGN_IN = 1313
+        private const val FACEBOOK_SIGN_IN = 1308
 
         @JvmStatic
         fun newInstance() =
