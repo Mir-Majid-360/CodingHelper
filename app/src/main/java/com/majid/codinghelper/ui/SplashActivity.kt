@@ -19,6 +19,7 @@ import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.majid.codinghelper.R
 import com.majid.codinghelper.auth.ui.AuthActivity
 import com.majid.codinghelper.databinding.ActivitySplashBinding
+import com.majid.codinghelper.subscription.SubscriptionActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
@@ -56,11 +57,11 @@ class SplashActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
 
             if (true){
-                val intent = Intent(this, AuthActivity::class.java)
+                val intent = Intent(this, SubscriptionActivity::class.java)
                 startActivity(intent)
                 finish()
             }else{
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, SubscriptionActivity::class.java)
                 startActivity(intent)
                 finish()
             }
